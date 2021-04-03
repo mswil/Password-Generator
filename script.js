@@ -16,14 +16,28 @@ function generatePassword() {
   }
 
   //ask how many characters 8-128
+  var num = parseInt(prompt("How many characters? (8-128)"));
+  if (num < 8 || num > 128) {
+    num = parseInt(prompt("Please enter a number between 8 and 128"));
+  }
 
   //ask upper
+  confirm("Do you want uppercase letters?") && pwdCriteria.push(upperChar);
 
   //ask lower
+  confirm("Do you want lowercase letters?") && pwdCriteria.push(lowerChar);
 
   //ask numeric
+  confirm("Do you want numbers?") && pwdCriteria.push(numChar);
 
   //ask special
+  confirm("Do you want special characters?") && pwdCriteria.push(specialChar);
+
+  //check to see that at least one criterion was chosen
+  if (!pwdCriteria.length) {
+    alert("You must select a least one character type");
+    generatePassword();
+  }
 }
 
 // Get references to the #generate element
