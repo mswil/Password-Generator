@@ -1,11 +1,14 @@
 // Assignment code here
 var specialChar = [" ", "!", "\"", "#", "$", "%", "&", "\'", "(", ")", "*", "+", ",", "-", ".", "/", ":", ";", "<", "=", ">", "?", "@", "[", "\\", "]", "^", "_", "`", "{", "|", "}", "~"];
-var upperChar = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+var upperChar = [];
 var lowerChar = [];
 var numChar = [];
 
-for (var i = 0; i < upperChar.length; i++) {
-  lowerChar.push(upperChar[i].toLowerCase());
+
+for (var i = "A".charCodeAt(0); i < "Z".charCodeAt(0); i++) {
+  var char = String.fromCharCode(i);
+  upperChar.push(char);
+  lowerChar.push(char.toLowerCase());
 }
 
 for (var i = 0; i < 10; i++) {
@@ -56,14 +59,39 @@ function generatePassword() {
 
   var password = "";
 
-  for (var i = 0; i < num; i++) {
-    //select character list (upper, lower, numeric, special)
-    var characterList = pwdCriteria[Math.floor(Math.random() * pwdCriteria.length)];
-    //select character in character list and add to password
-    password += characterList[Math.floor(Math.random() * characterList.length)];
+  while (!validatePassword(password, pwdCriteria)) {
+    //start off fresh
+    password = "";
+
+    for (var i = 0; i < num; i++) {
+      //select character list (upper, lower, numeric, special)
+      var characterList = getRandElement(pwdCriteria);
+      //select character in character list and add to password
+      password += getRandElement(characterList);
+    }
   }
 
   return password;
+}
+
+function validatePassword(password, pwdCriteria) {
+  var criteriaCount = 0;
+
+  //check to make sure at least one of each requested character type is included
+  for (var i = 0; i < pwdCriteria.length; i++) {
+    for (var j = 0; j < password.length; j++) {
+      if (pwdCriteria[i].includes(password[j])) {
+        criteriaCount++;
+        break;
+      }
+    }
+  }
+
+  return criteriaCount === pwdCriteria.length;
+}
+
+function getRandElement(list) {
+  return list[Math.floor(Math.random() * list.length)];
 }
 
 // Get references to the #generate element
