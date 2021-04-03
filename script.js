@@ -7,8 +7,8 @@ function generatePassword() {
 
   var pwdCriteria = [];
 
-  for (var i = 0; i < upper.length; i++) {
-    lower.push(upper[i].toLowerCase());
+  for (var i = 0; i < upperChar.length; i++) {
+    lowerChar.push(upperChar[i].toLowerCase());
   }
 
   for (var i = 0; i < 10; i++) {
@@ -38,6 +38,17 @@ function generatePassword() {
     alert("You must select a least one character type");
     generatePassword();
   }
+  var password = "";
+
+  for(var i = 0; i < num; i++) {
+    //select character type
+    var characters = pwdCriteria[Math.floor(Math.random()*pwdCriteria.length)];
+    console.log(characters);
+    password += characters[Math.floor(Math.random() * characters.length)];
+    console.log(password);
+  }
+
+  return password;
 }
 
 // Get references to the #generate element
