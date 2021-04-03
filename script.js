@@ -1,25 +1,32 @@
 // Assignment code here
-function generatePassword() {
-  var specialChar = [" ", "!", "\"", "#", "$", "%", "&", "\'", "(", ")", "*", "+", ",", "-", ".", "/", ":", ";", "<", "=", ">", "?", "@", "[", "\\", "]", "^", "_", "`", "{", "|", "}", "~"];
-  var upperChar = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
-  var lowerChar = [];
-  var numChar = [];
+var specialChar = [" ", "!", "\"", "#", "$", "%", "&", "\'", "(", ")", "*", "+", ",", "-", ".", "/", ":", ";", "<", "=", ">", "?", "@", "[", "\\", "]", "^", "_", "`", "{", "|", "}", "~"];
+var upperChar = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+var lowerChar = [];
+var numChar = [];
 
-  var pwdCriteria = [];
+for (var i = 0; i < upperChar.length; i++) {
+  lowerChar.push(upperChar[i].toLowerCase());
+}
 
-  for (var i = 0; i < upperChar.length; i++) {
-    lowerChar.push(upperChar[i].toLowerCase());
-  }
+for (var i = 0; i < 10; i++) {
+  numChar.push(i.toString());
+}
 
-  for (var i = 0; i < 10; i++) {
-    numChar.push(i.toString());
-  }
+function getCharCount() {
 
   //ask how many characters 8-128
   var num = parseInt(prompt("How many characters? (8-128)"));
-  if (num < 8 || num > 128) {
-    num = parseInt(prompt("Please enter a number between 8 and 128"));
+
+  if (isNaN(num) || num < 8 || num > 128) {
+    alert("Please enter a number between 8 and 128");
+    return getCharCount();
   }
+
+  return num;
+}
+
+function gatherCriteria() {
+  var pwdCriteria = [];
 
   //ask upper
   confirm("Do you want uppercase letters?") && pwdCriteria.push(upperChar);
@@ -36,16 +43,24 @@ function generatePassword() {
   //check to see that at least one criterion was chosen
   if (!pwdCriteria.length) {
     alert("You must select a least one character type");
-    generatePassword();
+    return gatherCriteria();
   }
+
+  return pwdCriteria;
+}
+
+function generatePassword() {
+
+  var num = getCharCount();
+  var pwdCriteria = gatherCriteria();
+
   var password = "";
 
-  for(var i = 0; i < num; i++) {
-    //select character type
-    var characters = pwdCriteria[Math.floor(Math.random()*pwdCriteria.length)];
-    console.log(characters);
-    password += characters[Math.floor(Math.random() * characters.length)];
-    console.log(password);
+  for (var i = 0; i < num; i++) {
+    //select character list (upper, lower, numeric, special)
+    var characterList = pwdCriteria[Math.floor(Math.random() * pwdCriteria.length)];
+    //select character in character list and add to password
+    password += characterList[Math.floor(Math.random() * characterList.length)];
   }
 
   return password;
